@@ -31,4 +31,5 @@ startScheduler();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log(`This is the test message for deployment`);
 });
