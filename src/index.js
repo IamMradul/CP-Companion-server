@@ -18,6 +18,23 @@ if (!fs.existsSync(dataDir)) {
 app.use(cors());
 app.use(express.json());
 
+app.set('trust proxy', true);
+
+const uniqueDevices = new Set();
+let totalRequests = 0;
+
+app.use((req, res, next) => {
+  if (req.ip) {
+    uniqueDevices.add(req.ip);
+  }
+  totalRequests++;
+  
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} | IP: ${req.ip || 'unknown'}`);
+  console.log(`Stats -> Total Requests: ${totalRequests} | Unique Devices: ${uniqueDevices.size}`);
+  
+  next();
+});
+
 // Routes
 app.use('/api', routes);
 
